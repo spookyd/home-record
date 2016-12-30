@@ -1,0 +1,29 @@
+# create a docker-compose.yml file
+version: "2"
+#volumes:
+#  data:
+#    external:
+#      name: "record-data"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: "Dockerfile"
+    volumes:
+      - ./:/app
+    ports:
+      - "41960:8080"
+    depends_on:
+      - mongo
+  mongodata:
+    image: mongo:3.0.4
+    volumes:
+      - /data/db
+    command: --break-mongo
+  mongo:
+    image: mongo:3.0.4
+    volumes_from:
+      - mongodata
+    ports:
+      - "27017:27017"
+    command: --smallfiles --rest --auth
