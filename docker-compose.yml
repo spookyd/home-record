@@ -1,9 +1,5 @@
 # create a docker-compose.yml file
 version: "2"
-#volumes:
-#  data:
-#    external:
-#      name: "record-data"
 services:
   api:
     build:
@@ -26,4 +22,8 @@ services:
       - mongodata
     ports:
       - "27017:27017"
-    command: --smallfiles --rest --auth
+    environment:
+        MONGODB_USER: "${db_user_env}"
+        MONGODB_DATABASE: "${dbname_env}"
+        MONGODB_PASS: "${db_pass}"
+    command: --smallfiles --rest --noauth

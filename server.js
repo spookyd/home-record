@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const apiRegistery = require('./server-api-register');
 var bodyParser = require('body-parser');
 
 // Constants
@@ -14,16 +15,19 @@ mongoose.connect("mongodb://mongo:27017");
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-var router = express.Router();
-
-router.get('/', function (req, res) {
-    res.json({ version: '0.0.1' });
+// Make our db accessible to our router
+app.use(function (req, res, next) {
+    req.db = mongoose;
+    next();
 });
 
+var router = express.Router();
 // REGISTER OUR ROUTES -------------------------------
+apiRegistery(router);
+
 // all of our routes will be prefixed with /api
 app.use('/api', router);
 
