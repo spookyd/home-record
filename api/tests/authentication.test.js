@@ -1,11 +1,9 @@
 /**
  * Created by lukedavis on 6/18/17.
  */
-import jwt from 'jsonwebtoken';
-import chai, {expect} from 'chai';
-import chaiHttp from 'chai-http';
-import app from '../../index';
-import config from '../../config/config';
+const chai = require('chai')
+    , chaiHttp = require('chai-http')
+    , app = require('../../index');
 
 chai.use(chaiHttp);
 
