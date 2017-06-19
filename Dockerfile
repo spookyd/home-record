@@ -1,15 +1,16 @@
-FROM node:boron
+FROM node:alpine
 
 # Create app directory
 RUN mkdir -p /app
+
+RUN npm install npm@4 -g
+RUN npm install node-gyp -g
+RUN node-gyp install
+
 WORKDIR /app
+ADD package.json /app/package.json
 
-# Install app dependencies
-COPY package.json /app/
 RUN npm install
-
-# Bundle app source
-COPY . /app/
 
 EXPOSE 8080
 CMD [ "npm", "start" ]

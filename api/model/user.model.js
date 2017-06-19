@@ -1,9 +1,9 @@
 /**
  * Created by lukedavis on 12/31/16.
  */
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
+const mongoose = require('mongoose')
+    , Schema = mongoose.Schema
+    , bcrypt = require('bcryptjs');
 
 var UserSchema = new Schema({
     username: {type: String, required: true, unique: true},

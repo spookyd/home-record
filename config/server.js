@@ -1,16 +1,15 @@
 /**
  * Created by lukedavis on 12/31/16.
  */
-import express from 'express';
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import expressWinston from 'express-winston';
-import helmet from 'helmet';
-import winstonInstance from './winston';
-import routes from '../api/routes/index.route';
-import config from './config';
-
-const app = express();
+const express = require('express')
+    , logger = require('morgan')
+    , bodyParser = require('body-parser')
+    , expressWinston = require('express-winston')
+    , helmet = require('helmet')
+    , winstonInstance = require('./winston')
+    , routes = require('../api/routes/index.route')
+    , config = require('./config')
+    , app = express();
 
 if (config.env === 'development') {
     app.use(logger('dev'));
@@ -67,10 +66,10 @@ if (config.env !== 'test') {
 
 // error handler, send stacktrace only during development
 app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
-    res.status(err.status).json({
+    res.status(500).json({
         message: config.env === 'development' ? err.message : err.status,
         stack: config.env === 'development' ? err.stack : {}
     })
 );
 
-export default app;
+module.exports = app;

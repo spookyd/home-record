@@ -1,0 +1,29 @@
+version: "2"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: "Dockerfile"
+    volumes:
+      - .:/app
+      - /app/node_modules/
+    ports:
+      - "41960:8080"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=mongodb://mongo
+      - DB_PORT=27017
+    links:
+      - mongo
+  mongodata:
+    image: mongo:3.0.4
+    volumes:
+      - /data/db
+  mongo:
+    image: mongo:3.0.4
+    volumes_from:
+      - mongodata
+    ports:
+      - "27017:27017"
+    command: --smallfiles --rest --noauth

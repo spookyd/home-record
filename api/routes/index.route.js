@@ -1,9 +1,9 @@
 /**
  * Created by lukedavis on 6/17/17.
  */
-import express from 'express';
-import eventRoutes from './recordEvent.route';
-import authRoutes from './authentication.route';
+const express = require('express')
+    , eventRoutes = require('./recordEvent.route')
+    , authRoutes = require('./authentication.route');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -18,4 +18,4 @@ router.use('/event', eventRoutes);
 // mount auth routes at /authentication
 router.use('/authentication', authRoutes);
 
-export default router;
+module.exports = router;

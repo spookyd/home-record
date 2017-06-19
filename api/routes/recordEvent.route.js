@@ -1,8 +1,8 @@
 /**
  * Created by lukedavis on 12/29/16.
  */
-import express from 'express';
-import eventCtrl from '../controller/event.controller';
+const express = require('express')
+    , eventCtrl = require('../controller/event.controller');
 
 const router = express.Router();
 
@@ -16,4 +16,4 @@ router.route('/type/:eventType')
     /** GET api/event/type/:eventType */
     .get(eventCtrl.findByType);
 
-export default router;
+module.exports = router;

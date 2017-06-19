@@ -2,10 +2,10 @@
  * Created by lukedavis on 6/18/17.
  */
 
-import User from './../model/user.model.js';
-import config from '../../config/config';
-import jwt from 'jsonwebtoken';
-import moment from 'moment';
+const User = require('../model/user.model.js')
+    , config = require('../../config/config')
+    , jwt = require('jsonwebtoken')
+    , moment = require('moment');
 
 function login(req, resp, next) {
     User.findOne({
@@ -32,7 +32,7 @@ function login(req, resp, next) {
                         },
                         role: user.role
                     }, config.secret);
-                    resp.json({success: true, token: token, expires: expires});
+                    resp.json({token: token, expires: expires});
                 } else if (!isMatch && !err) {
                     resp.status(422).send({msg: 'Authentication failed. No user found for the provided credentials'});
                 } else {
@@ -43,4 +43,6 @@ function login(req, resp, next) {
     });
 }
 
-export default { login };
+module.exports = {
+    login
+};

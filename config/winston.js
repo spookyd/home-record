@@ -1,7 +1,7 @@
 /**
  * Created by lukedavis on 6/17/17.
  */
-import winston from 'winston';
+const winston = require('winston');
 
 const logger = new (winston.Logger)({
     transports: [
@@ -12,4 +12,4 @@ const logger = new (winston.Logger)({
     ]
 });
 
-export default logger;
+module.exports = logger;

@@ -2,9 +2,9 @@
  * Created by lukedavis on 12/31/16.
  */
 
-var jwt = require('jsonwebtoken');
-var User = require('../model/user.model');
-var config = require('../../config/config');
+const jwt = require('jsonwebtoken')
+    , User = require('../model/user.model.js')
+    , config = require('../../config/config');
 
 module.exports = function (req, resp, next) {
     // When performing a cross domain request, you will receive
@@ -24,7 +24,6 @@ module.exports = function (req, resp, next) {
             if (decoded.exp <= Date.now()) {
                 resp.status(400);
                 resp.json({
-                    "status": 400,
                     "message": "Token Expired"
                 });
                 return;
@@ -37,7 +36,6 @@ module.exports = function (req, resp, next) {
                     // No user with this name exists, respond back with a 401
                     resp.status(401);
                     resp.json({
-                        "status": 401,
                         "message": "Invalid User"
                     });
                 } else {
@@ -47,7 +45,6 @@ module.exports = function (req, resp, next) {
                     } else {
                         resp.status(403);
                         resp.json({
-                            "status": 403,
                             "message": "Not Authorized"
                         });
                     }
@@ -57,7 +54,6 @@ module.exports = function (req, resp, next) {
         } catch (err) {
             resp.status(500);
             resp.json({
-                "status": 500,
                 "message": "Oops something went wrong",
                 "error": err
             });
@@ -65,7 +61,6 @@ module.exports = function (req, resp, next) {
     } else {
         resp.status(401);
         resp.json({
-            "status": 401,
             "message": "Invalid Token or Key"
         });
     }

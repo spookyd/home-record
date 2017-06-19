@@ -3,26 +3,25 @@
  */
 'use strict';
 
-import mongoose from 'mongoose';
+const mongoose =  require('mongoose');
 // import util from 'util';
 
 // config should be imported before importing any other file
-import config from './config/config';
-import app from './config/server';
-
-const debug = require('debug')('home-record:index');
+const config = require('./config/config')
+    , app = require('./config/server')
+    , debug = require('debug')('home-record:index');
 
 // connect to mongo db
 const mongoUri = config.db.host + ':' + config.db.port;
 mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1 } } });
-mongoose.connection.on('error', () => {
-    throw new Error(`unable to connect to database: ${mongoUri}`);
+mongoose.connection.on('error', function() {
+    throw new Error('unable to connect to database: ' + mongoUri);
 });
 
 // print mongoose logs in dev env
 if (config.debug) {
-    mongoose.set('debug', (collectionName, method, query, doc) => {
-        debug(`${collectionName}.${method}`, query, doc);
+    mongoose.set('debug', function(collectionName, method, query, doc) {
+        debug(collectionName + '.' + method, query, doc);
     });
 }
 
@@ -30,12 +29,12 @@ if (config.debug) {
 // src: https://github.com/mochajs/mocha/issues/1912
 if (!module.parent) {
     // listen on port config.port
-    app.listen(config.port, () => {
-        console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
+    app.listen(config.port, function() {
+        console.info('server started on port ' + config.port + ' ' + config.env); // eslint-disable-line no-console
     });
 }
 
-export default app;
+module.exports = app;
 
 // const express = require('express');
 // const config = require('./config/config');

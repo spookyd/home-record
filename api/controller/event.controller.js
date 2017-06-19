@@ -1,7 +1,7 @@
 /**
  * Created by lukedavis on 6/18/17.
  */
-import Event from '../model/event.model';
+const Event = require('../model/event.model');
 
 function create(req, resp, next) {
     // Validate required fields before creating
@@ -23,7 +23,7 @@ function create(req, resp, next) {
 }
 
 function find(req, resp, next) {
-    event.find(function (err, events) {
+    Event.find(function (err, events) {
         if (err) {
             next(err);
         }
@@ -32,7 +32,7 @@ function find(req, resp, next) {
 }
 
 function findByType(req, resp, next) {
-    event.find({eventType: req.params.eventType}, function (err, events) {
+    Event.find({eventType: req.params.eventType}, function (err, events) {
         if (err) {
             next(err)
         }
@@ -40,4 +40,4 @@ function findByType(req, resp, next) {
     });
 }
 
-export default { create, find, findByType };
+module.exports = { create, find, findByType };
