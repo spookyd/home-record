@@ -3,8 +3,8 @@
  */
 
 var jwt = require('jsonwebtoken');
-var User = require('../model/user');
-var config = require('../../config/main');
+var User = require('../model/user.model');
+var config = require('../../config/config');
 
 module.exports = function (req, resp, next) {
     // When performing a cross domain request, you will receive

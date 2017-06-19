@@ -1,4 +1,3 @@
-# create a docker-compose.yml file
 version: "2"
 services:
   api:
@@ -6,24 +5,25 @@ services:
       context: .
       dockerfile: "Dockerfile"
     volumes:
-      - ./:/app
+      - .:/app
+      - /app/node_modules/
     ports:
       - "41960:8080"
-    depends_on:
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=mongodb://mongo
+      - DB_PORT=27017
+    links:
       - mongo
   mongodata:
     image: mongo:3.0.4
     volumes:
       - /data/db
-    command: --break-mongo
   mongo:
     image: mongo:3.0.4
     volumes_from:
       - mongodata
     ports:
       - "27017:27017"
-    environment:
-        MONGODB_USER: "${db_user_env}"
-        MONGODB_DATABASE: "${dbname_env}"
-        MONGODB_PASS: "${db_pass}"
     command: --smallfiles --rest --noauth
