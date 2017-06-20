@@ -3,41 +3,44 @@
  */
 const Event = require('../model/event.model');
 
-function create(req, resp, next) {
-    // Validate required fields before creating
-    if ('eventType' in req.body) {
-        var event = new Event();
-        event.eventType = req.body.eventType;
-        event.created = new Date();
-        event.payload = req.body.payload;
+var EventCtrl = {
 
-        event.save(function (err) {
+    create: function (req, resp, next) {
+        // Validate required fields before creating
+        if ('eventType' in req.body) {
+            var event = new Event();
+            event.eventType = req.body.eventType;
+            event.created = new Date();
+            event.payload = req.body.payload;
+
+            event.save(function (err) {
+                if (err) {
+                    next(err);
+                }
+                resp.status(200).json({message: "Event created!"});
+            });
+        } else {
+            resp.status(400).json({requiredField: "eventType"});
+        }
+    },
+
+    find: function (req, resp, next) {
+        Event.find((err, events) => {
             if (err) {
                 next(err);
             }
-            resp.status(200).send({message: "Event created!"});
+            resp.json(events);
         });
-    } else {
-        resp.status(400).send({requiredField: "eventType"});
+    },
+
+    findByType: function (req, resp, next) {
+        Event.find({eventType: req.params.eventType}, function (err, events) {
+            if (err) {
+                next(err)
+            }
+            resp.send(events);
+        });
     }
-}
+};
 
-function find(req, resp, next) {
-    Event.find(function (err, events) {
-        if (err) {
-            next(err);
-        }
-        resp.json(events);
-    });
-}
-
-function findByType(req, resp, next) {
-    Event.find({eventType: req.params.eventType}, function (err, events) {
-        if (err) {
-            next(err)
-        }
-        resp.send(events);
-    });
-}
-
-module.exports = { create, find, findByType };
+module.exports = EventCtrl;

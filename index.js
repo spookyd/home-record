@@ -4,7 +4,6 @@
 'use strict';
 
 const mongoose =  require('mongoose');
-// import util from 'util';
 
 // config should be imported before importing any other file
 const config = require('./config/config')
@@ -12,9 +11,13 @@ const config = require('./config/config')
     , debug = require('debug')('home-record:index');
 
 // connect to mongo db
-const mongoUri = config.db.host + ':' + config.db.port;
+const mongoUri = config.db;
+console.log('Mongoose connecting to ' + mongoUri);
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1 } } });
+mongoose.connect(mongoUri, { server: { socketOptions: { keepAlive: 1, reconnectTries: 5 } } });
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open to ' + config.db);
+});
 mongoose.connection.on('error', function() {
     throw new Error('unable to connect to database: ' + mongoUri);
 });

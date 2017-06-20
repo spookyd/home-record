@@ -13,7 +13,6 @@ module.exports = {
         User.findOne({
             username: req.body.username
         }, function (err, user) {
-            console.log('Failing to find user with error' + err);
             if (err) throw err;
 
             if (!user) {
@@ -34,10 +33,10 @@ module.exports = {
                                 last: user.name.last
                             },
                             role: user.role
-                        }, config.secret);
+                        }, config.jwtSecret);
                         resp.json({token: token, expires: expires});
                     } else if (!isMatch && !err) {
-                        resp.status(422).send({msg: 'Authentication failed. No user found for the provided credentials'});
+                        resp.status(422).json({msg: 'Authentication failed. No user found for the provided credentials'});
                     } else {
                         next(err);
                     }

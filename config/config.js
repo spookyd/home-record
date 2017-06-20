@@ -5,12 +5,9 @@
 require('dotenv').config();
 
 const config = {
-    env: process.env.NODE_ENVIRONMENT,
+    env: process.env.NODE_ENV,
     debug: process.env.DEBUG,
-    db: {
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT
-    },
+    db: process.env.DB_HOST + ':' + process.env.DB_PORT,
     jwtSecret: process.env.JWT_SECRET,
     port: process.env.PORT
 };

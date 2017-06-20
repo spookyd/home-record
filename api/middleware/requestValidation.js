@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
     , User = require('../model/user.model.js')
     , config = require('../../config/config');
 
-module.exports = function (req, resp, next) {
+module.exports = (req, resp, next) => {
     // When performing a cross domain request, you will receive
     // a pre-flighted request first. This is to check if our the app
     // is safe.
@@ -19,7 +19,7 @@ module.exports = function (req, resp, next) {
 
     if (token) {
         try {
-            var decoded = jwt.verify(token, config.secret);
+            var decoded = jwt.verify(token, config.jwtSecret);
 
             if (decoded.exp <= Date.now()) {
                 resp.status(400);
@@ -39,11 +39,11 @@ module.exports = function (req, resp, next) {
                         "message": "Invalid User"
                     });
                 } else {
-                    if ((req.url.indexOf('admin') >= 0 && user.role == 'admin') || (req.url.indexOf('admin') < 0 && req.url.indexOf('/api/v1/') >= 0)) {
+                    if ((req.url.indexOf('admin') >= 0 && user.role == 'admin') || (req.url.indexOf('admin') < 0 && req.url.indexOf('/api/') >= 0)) {
                         req.user = user;
                         next(); // To move to next middleware
                     } else {
-                        resp.status(403);
+                        resp.status(401);
                         resp.json({
                             "message": "Not Authorized"
                         });
