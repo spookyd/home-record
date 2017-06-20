@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --harmony index.js",
-    "test": "NODE_ENV=test && ./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register api/tests --recursive"
+    "test": "NODE_ENV=test && ./node_modules/.bin/mocha --ui bdd --reporter spec --colors api/tests --recursive"
   },
   "repository": {
     "type": "git",
